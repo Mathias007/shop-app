@@ -62,8 +62,13 @@ export class BasketService {
         if (
             !this.items.every((item) => this.shopService.hasProduct(item.name))
         ) {
+            const alternativeBasket = this.items.filter((item) =>
+                this.shopService.hasProduct(item.name)
+            );
+
             return {
                 isSuccess: false,
+                alternativeBasket,
             };
         }
 
