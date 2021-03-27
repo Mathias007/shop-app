@@ -1,26 +1,18 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Inject } from "@nestjs/common";
 import { GetListOfProductsResponse } from "../interfaces/shop";
+import { ShopService } from './shop.service';
 
 @Controller("shop")
 export class ShopController {
+
+    constructor(
+        @Inject(ShopService) private shopService: ShopService
+    ) {
+
+    }
+
     @Get("/")
     getListOfProducts(): GetListOfProductsResponse {
-        return [
-            {
-                name: "ziemniaki",
-                description: "pszne",
-                price: 2,
-            },
-            {
-                name: "pomidory",
-                description: "boże",
-                price: 3,
-            },
-            {
-                name: "ogórki",
-                description: "sprawiedliwe",
-                price: 4,
-            },
-        ];
+        return this.shopService.getProducts();
     }
 }
