@@ -1,3 +1,5 @@
+import { AddProductDto } from "../basket/dto/add-product.dto";
+
 export type AddProductToBasketResponse =
     | {
           isSuccess: true;
@@ -10,3 +12,5 @@ export type AddProductToBasketResponse =
 export interface RemoveProductFromBasketResponse {
     isSuccess: boolean;
 }
+
+export type ListProductsInBasketResponse = AddProductDto[];

@@ -3,6 +3,7 @@ import { AddProductDto } from "./dto/add-product.dto";
 import { ShopService } from "../shop/shop.service";
 import {
     AddProductToBasketResponse,
+    ListProductsInBasketResponse,
     RemoveProductFromBasketResponse,
 } from "../interfaces/basket";
 
@@ -30,8 +31,6 @@ export class BasketService {
 
         items.push(item);
 
-        console.log(items);
-
         return {
             isSuccess: true,
             index: items.length - 1,
@@ -49,10 +48,12 @@ export class BasketService {
 
         items.splice(index, 1);
 
-        console.log(items);
-
         return {
             isSuccess: true,
         };
+    }
+
+    list(): ListProductsInBasketResponse {
+        return this.items;
     }
 }
