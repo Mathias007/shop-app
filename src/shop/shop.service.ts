@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { GetListOfProductsResponse } from "../interfaces/shop";
-
 @Injectable()
 export class ShopService {
     getProducts(): GetListOfProductsResponse {
