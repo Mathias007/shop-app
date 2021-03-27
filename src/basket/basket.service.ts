@@ -5,6 +5,7 @@ import {
     AddProductToBasketResponse,
     ListProductsInBasketResponse,
     RemoveProductFromBasketResponse,
+    GetTotalPriceResponse,
 } from "../interfaces/basket";
 
 @Injectable()
@@ -55,5 +56,16 @@ export class BasketService {
 
     list(): ListProductsInBasketResponse {
         return this.items;
+    }
+
+    getTotalPrice(): GetTotalPriceResponse {
+        return this.items
+            .map(
+                (item) =>
+                    this.shopService.getPriceOfProduct(item.name) *
+                    item.count *
+                    1.23
+            )
+            .reduce((prev, curr) => prev + curr, 0);
     }
 }

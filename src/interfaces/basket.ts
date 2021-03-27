@@ -14,3 +14,5 @@ export interface RemoveProductFromBasketResponse {
 }
 
 export type ListProductsInBasketResponse = AddProductDto[];
+
+export type GetTotalPriceResponse = number;
