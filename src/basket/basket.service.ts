@@ -10,37 +10,42 @@ export class BasketService {
     private items: AddProductDto[] = [];
 
     add(item: AddProductDto): AddProductToBasketResponse {
+        const { name, count } = item;
+        const { items } = this;
+
         if (
-            typeof item.name !== "string" ||
-            typeof item.count !== "number" ||
-            item.name === "" ||
-            item.count < 1
+            typeof name !== "string" ||
+            typeof count !== "number" ||
+            name === "" ||
+            count < 1
         ) {
             return {
                 isSuccess: false,
             };
         }
 
-        this.items.push(item);
+        items.push(item);
 
-        console.log(this.items);
+        console.log(items);
 
         return {
             isSuccess: true,
-            index: this.items.length - 1,
+            index: items.length - 1,
         };
     }
 
     remove(index: number): RemoveProductFromBasketResponse {
-        if (index < 0 || index >= this.items.length) {
+        const { items } = this;
+
+        if (index < 0 || index >= items.length) {
             return {
                 isSuccess: false,
             };
         }
 
-        this.items.splice(index, 1);
+        items.splice(index, 1);
 
-        console.log(this.items);
+        console.log(items);
 
         return {
             isSuccess: true,
