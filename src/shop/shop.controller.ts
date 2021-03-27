@@ -1,9 +1,10 @@
 import { Controller, Get } from "@nestjs/common";
+import { GetListOfProductsResponse } from "../interfaces/shop";
 
 @Controller("shop")
 export class ShopController {
     @Get("/")
-    getListOfProducts() {
+    getListOfProducts(): GetListOfProductsResponse {
         return [
             {
                 name: "ziemniaki",
