@@ -25,4 +25,34 @@ export class ShopService {
         return (await this.getProducts()).find((item) => item.name === name)
             .price;
     }
+
+    async getOneProduct(id: string): Promise<ShopItem> {
+        return this.shopItemRepository.findOneOrFail(id);
+    }
+
+    async removeProduct(id: string) {
+        await this.shopItemRepository.delete(id);
+    }
+
+    async createDummyProduct(): Promise<ShopItem> {
+        const newItem = new ShopItem();
+        newItem.price = 100;
+        newItem.name = "Korniszon";
+        newItem.description = "debesta";
+
+        await this.shopItemRepository.save(newItem);
+        return newItem;
+    }
+
+    async addBoughtCounter(id: string) {
+        this.shopItemRepository.update(id, {
+            wasEverBought: true,
+        });
+
+        const item = await this.shopItemRepository.findOneOrFail(id);
+
+        item.boughtCounter++;
+
+        await this.shopItemRepository.save(item);
+    }
 }
