@@ -13,7 +13,7 @@ import {
     AddProductToBasketResponse,
     ListProductsInBasketResponse,
     RemoveProductFromBasketResponse,
-    GetTotalPriceResponse
+    GetTotalPriceResponse,
 } from "../interfaces/basket";
 
 @Controller("basket")
@@ -39,8 +39,8 @@ export class BasketController {
         return this.basketService.list();
     }
 
-    @Get('/total-price')
-    getTotalPrice(): GetTotalPriceResponse {
+    @Get("/total-price")
+    getTotalPrice(): Promise<GetTotalPriceResponse> {
         return this.basketService.getTotalPrice();
     }
 }

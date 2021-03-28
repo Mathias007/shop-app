@@ -1,38 +1,28 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GetListOfProductsResponse } from "../interfaces/shop";
 import { BasketService } from "../basket/basket.service";
+import { InjectRepository } from "@nestjs/typeorm";
+import { ShopItem } from "./shop-item.entity";
+import { Repository } from "typeorm";
 @Injectable()
 export class ShopService {
     constructor(
         @Inject(forwardRef(() => BasketService))
-        private basketService: BasketService
+        private basketService: BasketService,
+        @InjectRepository(ShopItem)
+        private shopItemRepository: Repository<ShopItem>
     ) {}
 
-    getProducts(): GetListOfProductsResponse {
-        return [
-            {
-                name: "ziemniaki",
-                description: "pszne",
-                price: 7,
-            },
-            {
-                name: "pomidory",
-                description: "boże",
-                price: 8 - this.basketService.countPromo(),
-            },
-            {
-                name: "ogórki",
-                description: "sprawiedliwe",
-                price: 9,
-            },
-        ];
+    async getProducts(): Promise<GetListOfProductsResponse> {
+        return await this.shopItemRepository.find();
     }
 
-    hasProduct(name: string): boolean {
-        return this.getProducts().some((item) => item.name === name);
+    async hasProduct(name: string): Promise<boolean> {
+        return (await this.getProducts()).some((item) => item.name === name);
     }
 
-    getPriceOfProduct(name: string): number {
-        return this.getProducts().find((item) => item.name === name).price;
+    async getPriceOfProduct(name: string): Promise<number> {
+        return (await this.getProducts()).find((item) => item.name === name)
+            .price;
     }
 }
