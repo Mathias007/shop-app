@@ -6,7 +6,8 @@ import {
 import { BasketService } from "../basket/basket.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ShopItem } from "./shop-item.entity";
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
+import { ShopItemDetails } from "./shop-item-details.entity";
 @Injectable()
 export class ShopService {
     constructor(
@@ -22,6 +23,7 @@ export class ShopService {
         const maxPerPage = 3;
 
         const [items, count] = await this.shopItemRepository.findAndCount({
+            relations: ["details"],
             skip: maxPerPage * (currentPage - 1),
             take: maxPerPage,
         });
@@ -58,6 +60,17 @@ export class ShopService {
         newItem.description = "debesta";
 
         await this.shopItemRepository.save(newItem);
+
+        const details = new ShopItemDetails();
+        details.color = "green";
+        details.width = 20;
+
+        await details.save();
+
+        newItem.details = details;
+
+        await this.shopItemRepository.save(newItem);
+
         return newItem;
     }
 
@@ -75,7 +88,9 @@ export class ShopService {
 
     async findProducts(searchTerm: string): Promise<GetListOfProductsResponse> {
         return await this.shopItemRepository.find({
-            description: searchTerm,
+            where: {
+                description: Like(`%${searchTerm}%`),
+            },
         });
     }
 }
